@@ -1,0 +1,10 @@
+dataset/
+dataset_real/
+dataset_training/
+dataset_training_real/
+dataset_validation/
+dataset_validation_real/
+dronesound_hrtf_snippets/
+dronesound_hrtf_snippets_real/
+plots_left_right_snippets_el0_bin/
+plots_left_right_snippets_el0_bin_real/

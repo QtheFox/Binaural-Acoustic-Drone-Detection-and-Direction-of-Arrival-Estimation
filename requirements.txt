@@ -1,0 +1,12 @@
+numpy
+pandas
+matplotlib
+seaborn
+scipy
+pyroomacoustics 
+random2
+slab
+noisereduce
+keyboard
+numba
+torch
