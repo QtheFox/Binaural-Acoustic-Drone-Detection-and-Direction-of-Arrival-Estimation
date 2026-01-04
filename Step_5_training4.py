@@ -96,7 +96,8 @@ class SoundDirectionDataset(Dataset):
                         'left_short': left_short,
                         'right_long': right_long,
                         'right_short': right_short,
-                        'label': az
+                        'label': az,
+                        'snippet': os.path.basename(snippet)
                     })
         self.num_classes = 30
 
@@ -129,6 +130,7 @@ class SoundDirectionDataset(Dataset):
 def main():
     #dataset_training='dataset_training'
     #dataset_validation='dataset_validation'
+    #check label indexing, different for realgit 
     dataset_training='dataset_training_real'
     dataset_validation='dataset_validation_real'
     train_dataset = SoundDirectionDataset(dataset_training)

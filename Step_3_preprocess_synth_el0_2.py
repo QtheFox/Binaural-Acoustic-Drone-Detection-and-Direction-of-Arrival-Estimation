@@ -1,10 +1,11 @@
 import os
 from PIL import Image
-
+import matplotlib.pyplot as plt
 #input_folder = "plots_left_right_snippets_el0_bin"
 #output_folder = "dataset"
-input_folder = "plots_left_right_snippets_el0_bin_real"
-output_folder = "dataset_real"
+#input_folder = "plots_left_right_snippets_el0_bin_real"
+input_folder = "dronesound_debug"
+output_folder = "dronesound_debug"
 # Create folders if they don't exist
 def make_dirs(path):
     os.makedirs(path, exist_ok=True)

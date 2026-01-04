@@ -1,4 +1,4 @@
-numpy
+"numpy<2"
 pandas
 matplotlib
 seaborn
@@ -10,3 +10,4 @@ noisereduce
 keyboard
 numba
 torch
+torchvision

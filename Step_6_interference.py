@@ -1,8 +1,9 @@
 import os
 import time
 import torch
-from training4 import SoundDirectionCNN, SoundDirectionDataset
-
+from Step_5_training4 import SoundDirectionCNN, SoundDirectionDataset
+import matplotlib.pyplot as plt
+modelname="best_model4_real.pth"
 
 def extract_azimuth_from_path(path):
     parts = path.split(os.sep)
@@ -13,14 +14,14 @@ def extract_azimuth_from_path(path):
 
 
 def run_single_inference():
-    dataset = SoundDirectionDataset("dataset_training")
+    dataset = SoundDirectionDataset("dataset_debug")
 
     # -----------------------------
     # Load one sample (measure load time)
     # -----------------------------
     t0 = time.time()
-    left_long, right_long, left_short, right_short, true_label = dataset[40]
-    sample_path = dataset.samples[40]["left_long"]
+    left_long, right_long, left_short, right_short, true_label = dataset[0]#456
+    sample_path = dataset.samples[0]["left_long"]
     true_az_from_folder = extract_azimuth_from_path(sample_path)
 
     # Add batch dim
@@ -38,17 +39,22 @@ def run_single_inference():
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     model = SoundDirectionCNN().to(device)
 
-    if not os.path.exists("best_model4.pth"):
-        print("ERROR: best_model4.pth not found!")
+    if not os.path.exists(modelname):
+        print("ERROR: "+modelname+" not found!")
         return
 
-    model.load_state_dict(torch.load("best_model4.pth", map_location=device))
+    model.load_state_dict(torch.load(modelname, map_location=device))
     model.eval()
 
     left_long  = left_long.to(device)
     right_long = right_long.to(device)
     left_short = left_short.to(device)
     right_short = right_short.to(device)
+
+    torch.save(left_long, "left_long.pt")
+    torch.save(right_long, "right_long.pt")
+    torch.save(left_short, "left_short.pt")
+    torch.save(right_short, "right_short.pt")
 
     # -----------------------------
     # Measure inference time

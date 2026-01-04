@@ -48,8 +48,10 @@ def fill_amplitudes_numba(all_max_times, all_max_amplitudes, fs, num_samples):
 # -----------------------------
 #input_folder = "dronesound_hrtf_snippets"   # WAV snippets
 #output_folder = "plots_left_right_snippets_el0_bin" # PNGs here
-input_folder = "dronesound_hrtf_snippets_real"   # WAV snippets
-output_folder = "plots_left_right_snippets_el0_bin_real" # PNGs here
+#input_folder = "dronesound_hrtf_snippets_real"   # WAV snippets
+#output_folder = "plots_left_right_snippets_el0_bin_real" # PNGs here
+input_folder = "dronesound_debug"
+output_folder = "dronesound_debug"
 os.makedirs(output_folder, exist_ok=True)
 
 order = 2
@@ -126,8 +128,8 @@ for wav_file in os.listdir(input_folder):
     if data.ndim == 1:
         data = np.stack([data, data], axis=1)
 
-    left = data[:, 0]*1.5# / 32768.0
-    right = data[:, 1]*1.5# / 32768.0
+    left = data[:, 0]# / 32768.0
+    right = data[:, 1]# / 32768.0
 
     amp_left,amp_leftbw = analyze_channel(left, sr)
     amp_right,amp_rightbw = analyze_channel(right, sr)
