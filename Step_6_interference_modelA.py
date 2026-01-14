@@ -1,7 +1,7 @@
 import os
 import time
 import torch
-from Step_5_training4 import SoundDirectionCNN, SoundDirectionDataset
+from Step_5_training_modelA import SoundDirectionCNN, SoundDirectionDataset
 import matplotlib.pyplot as plt
 modelname="best_model4_real.pth"
 

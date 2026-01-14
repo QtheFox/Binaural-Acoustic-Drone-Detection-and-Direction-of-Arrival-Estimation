@@ -45,8 +45,8 @@ def fill_amplitudes_numba(all_max_times, all_max_amplitudes, fs, num_samples):
 # PARAMETERS
 # ============================================================
 
-#input_folder = "dronesound_hrtf_snippets_real1"
-input_folder = "dataset_debug"
+input_folder = "dronesound_hrtf_snippets_real1"
+#input_folder = "dataset_debug"
 output_folder = "dataset_real2"
 os.makedirs(output_folder, exist_ok=True)
 

@@ -15,7 +15,7 @@ from scipy.signal import butter, lfilter, find_peaks
 import matplotlib.pyplot as plt
 from PIL import Image
 import time
-from Step_5_training4 import SoundDirectionCNN
+from Step_5_training_modelA import SoundDirectionCNN
 from scipy.io import wavfile
 #load model
 import torch

@@ -15,7 +15,7 @@ from scipy.signal import butter, lfilter, find_peaks, correlate
 import matplotlib.pyplot as plt
 from PIL import Image
 import time
-from Step_5B_training5 import SoundDirectionCNN
+from Step_5_training_modelB import SoundDirectionCNN
 from scipy.io import wavfile
 #load model
 import torch
@@ -24,7 +24,7 @@ from torchvision import transforms
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 model = SoundDirectionCNN()
-model.load_state_dict(torch.load("best_model4_real2.pth", map_location=device))
+model.load_state_dict(torch.load("best_model4B_real2.pth", map_location=device))
 model.to(device)
 model.eval()
 

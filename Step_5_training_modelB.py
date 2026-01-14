@@ -221,7 +221,7 @@ def main():
 
         if val_loss < best_val_loss:
             best_val_loss = val_loss
-            torch.save(model.state_dict(), 'best_model4_real2.pth')
+            torch.save(model.state_dict(), 'best_model4B_real2.pth')
             print("✅ Saved best model")
 
     print("Training complete!")
