@@ -6,9 +6,9 @@ import random
 # -----------------------------
 # Parameters
 # -----------------------------
-dataset_root = "dataset_real"           # Original dataset folder
-train_root = "dataset_training_real"   # Training split folder
-val_root = "dataset_validation_real"   # Validation split folder
+dataset_root = "dataset_real2"           # Original dataset folder
+train_root = "dataset_training_real2"   # Training split folder
+val_root = "dataset_validation_real2"   # Validation split folder
 #dataset_root = "dataset"           # Original dataset folder
 #train_root = "dataset_training"   # Training split folder
 #val_root = "dataset_validation"   # Validation split folder

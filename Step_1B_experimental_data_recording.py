@@ -16,13 +16,14 @@ from scipy.io.wavfile import write
 import time
 import os
 from scipy.io import wavfile
+import keyboard
 
 # ------------------ EINSTELLUNGEN ------------------
 WIDTH, HEIGHT = 500, 500
 CENTER = (WIDTH // 2, HEIGHT // 2)
 RADIUS = 200
 ANGLE_STEP = 12
-out_folder = "dronesound_hrtf_snippets_real"
+out_folder = "dronesound_hrtf_snippets_real1"
 os.makedirs(out_folder, exist_ok=True)
 samplerate = 44100
 snippet_duration=0.1
@@ -30,8 +31,8 @@ fade_ms = 5             # optional fade-in/out
 num_samples_per_snippet = int(snippet_duration * samplerate)
 fade_samples = int(fade_ms / 1000 * samplerate)
 channels = 2
-threshold_db = -25
-record_duration = 3.6
+threshold_db = -19
+record_duration = 4.5
 input_device = 3  # M-Track Duo
 
 sd.default.device = input_device
@@ -82,9 +83,11 @@ while running:
     db_l, db_r = get_db_left_right(block)
 
     loud = (db_l > threshold_db) or (db_r > threshold_db)
-
+    #keyboard.wait("space")
+    #time.sleep(3)
     # ------------------ TRIGGER LOGIK ------------------
     if loud and trigger_ready:
+    #if 1:
 
         print(f"Trigger! Lautstärke: L={db_l:.1f} dB, R={db_r:.1f} dB")
         print("→ Starte 1 Sekunde Aufnahme...")

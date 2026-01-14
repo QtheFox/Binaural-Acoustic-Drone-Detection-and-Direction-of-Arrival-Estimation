@@ -3,10 +3,9 @@ import matplotlib.pyplot as plt
 
 # Pairs of tensors to compare: (original, real-time)
 tensor_files = [
-    ("left_long.pt", "left_long_rt.pt", "Left Long"),
-    ("right_long.pt", "right_long_rt.pt", "Right Long"),
-    ("left_short.pt", "left_short_rt.pt", "Left Short"),
-    ("right_short.pt", "right_short_rt.pt", "Right Short")
+    ("left_.pt", "left.pt", "Left"),
+    ("right_.pt", "right.pt", "Right"),
+    ("corr_.pt", "corr.pt", "corr"),
 ]
 
 for orig_file, rt_file, title in tensor_files:
@@ -45,3 +44,31 @@ for orig_file, rt_file, title in tensor_files:
     
     # Print max difference
     print(f"{title}: max absolute difference = {abs(diff).max():.6f}")
+
+
+# import torch
+# import matplotlib.pyplot as plt
+
+# # Tensors to plot: (filename, title)
+# tensor_files = [
+#     ("left.pt", "Left"),
+#     ("right.pt", "Right"),
+#     ("corr.pt", "Correlation")
+# ]
+
+# fig, axes = plt.subplots(1, 3, figsize=(18, 5))
+
+# for ax, (fname, title) in zip(axes, tensor_files):
+#     # Load tensor on CPU
+#     tensor = torch.load(fname, map_location="cpu").squeeze().numpy()
+
+#     # Plot
+#     im = ax.imshow(tensor, cmap="viridis", origin="lower")
+#     ax.set_title(title)
+#     ax.axis("off")
+
+#     # Colorbar
+#     plt.colorbar(im, ax=ax, fraction=0.046, pad=0.04)
+
+# plt.tight_layout()
+# plt.show()

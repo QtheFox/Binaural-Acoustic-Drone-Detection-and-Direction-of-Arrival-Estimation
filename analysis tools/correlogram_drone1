@@ -1,0 +1,108 @@
+import numpy as np
+import matplotlib.pyplot as plt
+from scipy.signal import butter, lfilter, correlate
+import soundfile as sf
+import os
+
+# ======================================================
+# GLOBAL PARAMETERS
+# ======================================================
+fs_target = 44100
+order = 2
+bandwidth = 40
+freqs = np.arange(800, 5001, 5)
+max_delay_ms = 2.0  # for correlogram
+
+snippet_indices = range(20, 28)  # 20 to 27 inclusive
+snippet_dir = "dronesound_hrtf_snippets_real1"
+
+# ======================================================
+# FILTER BANK FUNCTION
+# ======================================================
+def run_filter_bank(signal, fs):
+    nyq = fs / 2
+    filtered = []
+    center_freqs = []
+    for f_start in freqs:
+        f_low = f_start
+        f_high = f_start + bandwidth
+        if f_high >= nyq:
+            break
+        b, a = butter(order, [f_low/nyq, f_high/nyq], btype="band")
+        y = lfilter(b, a, signal)
+        filtered.append(y)
+        center_freqs.append((f_low + f_high)/2)
+    return np.array(filtered), np.array(center_freqs)
+
+# ======================================================
+# PLOTTING ALL SNIPPETS AS SUBPLOTS
+# ======================================================
+num_snippets = len(snippet_indices)
+cols = 4
+rows = int(np.ceil(num_snippets / cols))
+
+fig, axes = plt.subplots(rows, cols, figsize=(4*cols, 3*rows), squeeze=False)
+
+for i, idx in enumerate(snippet_indices):
+    filename = f"az204_el0_snippet{idx:03d}.wav"
+    filepath = os.path.join(snippet_dir, filename)
+    
+    audio, fs_audio = sf.read(filepath)
+    if fs_audio != fs_target:
+        raise ValueError("Sampling rate must match fs_target")
+    if audio.ndim != 2 or audio.shape[1] < 2:
+        raise ValueError("Audio file must be stereo (2 channels)")
+
+    left = audio[:, 0]
+    right = audio[:, 1]
+    min_len = min(len(left), len(right))
+    left = left[:min_len]
+    right = right[:min_len]
+
+    # Filter bank
+    left_fb, fb_freqs = run_filter_bank(left, fs_target)
+    right_fb, _ = run_filter_bank(right, fs_target)
+
+    # Binaural correlogram
+    max_lag = int(fs_target * max_delay_ms / 1000)
+    correlogram = []
+
+    for b in range(left_fb.shape[0]):
+        corr = correlate(left_fb[b], right_fb[b], mode="full")
+        mid = len(corr)//2
+        corr = corr[mid - max_lag : mid + max_lag]
+        # Normalize correlation
+        corr /= np.sqrt(np.sum(left_fb[b]**2) * np.sum(right_fb[b]**2) + 1e-12)
+        correlogram.append(corr)
+
+    correlogram = np.array(correlogram)
+    lags = np.linspace(-max_delay_ms, max_delay_ms, correlogram.shape[1])
+
+    # Determine subplot position
+    row = i // cols
+    col = i % cols
+    ax = axes[row, col]
+
+    im = ax.imshow(
+        correlogram,
+        aspect='auto',
+        origin='lower',
+        extent=[lags[0], lags[-1], fb_freqs[0], fb_freqs[-1]],
+        cmap='inferno'
+    )
+    ax.set_title(f"Snippet {idx}")
+    ax.set_xlabel("Delay (ms)")
+    ax.set_ylabel("Frequency (Hz)")
+    ax.set_yscale('log')
+
+# Remove empty subplots if any
+for j in range(i+1, rows*cols):
+    row = j // cols
+    col = j % cols
+    fig.delaxes(axes[row, col])
+
+# Shared colorbar
+fig.colorbar(im, ax=axes, orientation='vertical', label="Correlation", fraction=0.02, pad=0.02)
+
+plt.tight_layout()
+plt.show()
